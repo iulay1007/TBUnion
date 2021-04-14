@@ -4,4 +4,5 @@
     <string name="text_selected">精选</string>
     <string name="text_home">首页</string>
     <string name="text_search">搜索</string>
+    <string name="search_tips_text">搜你想搜的宝贝</string>
 </resources>

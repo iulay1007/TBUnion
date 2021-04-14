@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity  {
         searchFragment = new SearchFragment();
 
         fm = getSupportFragmentManager();
+        switchFragment(homeFragment);
 
     }
 

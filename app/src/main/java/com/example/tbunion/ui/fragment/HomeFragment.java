@@ -16,7 +16,7 @@ public class HomeFragment extends BaseFragment {
 
     @Override
     protected int getRootViewResId() {
-        return R.layout.frgment_selected;
+        return R.layout.fragment_home;
     }
 }
 
