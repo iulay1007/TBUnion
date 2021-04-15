@@ -9,24 +9,24 @@ public class LogUtils {
     private static final int WANING_LEV=2;
     private static final int ERROR_LEV=1;
 
-    public static void d(Class clazz,String log){
+    public static void d(Object object,String log){
         if(currentLev>=DEBUG_LEV){
-            Log.d(clazz.getSimpleName(),log);
+            Log.d(object.getClass().getSimpleName(),log);
         }
     }
-    public static void i(Class clazz,String log){
+    public static void i(Object object,String log){
         if(currentLev>=INFOR_LEV){
-            Log.d(clazz.getSimpleName(),log);
+            Log.d(object.getClass().getSimpleName(),log);
         }
     }
-    public static void w(Class clazz,String log){
+    public static void w(Object object,String log){
         if(currentLev>=WANING_LEV){
-            Log.d(clazz.getSimpleName(),log);
+            Log.d(object.getClass().getSimpleName(),log);
         }
     }
-    public static void e(Class clazz,String log){
+    public static void e(Object object,String log){
         if(currentLev>=ERROR_LEV){
-            Log.d(clazz.getSimpleName(),log);
+            Log.d(object.getClass().getSimpleName(),log);
         }
     }
 }
