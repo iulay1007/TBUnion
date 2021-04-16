@@ -4,8 +4,23 @@
     android:layout_height="match_parent"
     android:gravity="center"
     >
-    <TextView
-        android:text="网络错误"
+    <LinearLayout
+        android:id="@+id/network_error_tips"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp"
+            android:src="@mipmap/wifi"/>
+        <TextView
+            android:text="@string/text_network_error_tips"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+</LinearLayout>
 </LinearLayout>

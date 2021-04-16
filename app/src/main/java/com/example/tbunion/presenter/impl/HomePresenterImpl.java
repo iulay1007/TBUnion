@@ -19,6 +19,10 @@ public class HomePresenterImpl implements IHomePresenter {
 
     @Override
     public void getCategories() {
+        if(mCallback!=null){
+            mCallback.onLoading();
+        }
+
         //加载分类数据
         Retrofit retrofit=RetrofitManager.getInstance().getRetrofit();
         Api api =retrofit.create(Api.class);
@@ -30,14 +34,19 @@ public class HomePresenterImpl implements IHomePresenter {
                 LogUtils.d(HomePresenterImpl.this,"result code is -->"+code);
                 if(code== HttpURLConnection.HTTP_OK){
                     Categories categories=response.body();
-                    LogUtils.d(HomePresenterImpl.this,categories.toString());
-                    if(mCallback!=null){
+                    if(mCallback!=null)
+                    if(categories==null||categories.getData().size()==0){
+                        mCallback.onEmpty();
+                    }else {
                         mCallback.onCategoriesLoaded(categories);
+                        LogUtils.d(HomePresenterImpl.this,categories.toString());
                     }
+
                 }else {
-
                     LogUtils.i(HomePresenterImpl.this,"请求失败");
-
+                    if(mCallback!=null){
+                        mCallback.onNetworkError();
+                    }
                 }
 
 
@@ -45,7 +54,9 @@ public class HomePresenterImpl implements IHomePresenter {
 
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
-
+                if(mCallback!=null){
+                    mCallback.onNetworkError();
+                }
                 LogUtils.e(HomePresenterImpl.this,"请求错误"+t);
             }
         });

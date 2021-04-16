@@ -5,9 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.tbunion.R;
@@ -57,10 +54,31 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     }
 
     @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_home_fragment_layout,container,false);
+    }
+
+    @Override
     public void onCategoriesLoaded(Categories categories) {
+            setupState(State.SUCCESS);
         if(homePagerAdapter!=null)
         homePagerAdapter.setCategories(categories);
 
+    }
+
+    @Override
+    public void onNetworkError() {
+        setupState(State.ERROR);
+    }
+
+    @Override
+    public void onLoading() {
+        setupState(State.LOADING);
+    }
+
+    @Override
+    public void onEmpty() {
+        setupState(State.EMPTY);
     }
 
 
@@ -69,6 +87,15 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
         //取消注册
         if(homePresenter!=null)
             homePresenter.unregisterCallback(this);
+    }
+
+    @Override
+    protected void onRetryClick() {
+        //网络错误点击重试
+        //重新加载分类
+        if(homePresenter!=null){
+            homePresenter.getCategories();
+        }
     }
 }
 

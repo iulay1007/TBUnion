@@ -12,23 +12,42 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.tbunion.R;
+import com.example.tbunion.utils.LogUtils;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 public abstract class BaseFragment extends Fragment {
     private State currentState = State.NONE;
     private View successView;
     private View loadingView;
+    private View errorView;
+    private View emptyView;
+
     public enum State{
         NONE,LOADING,SUCCESS,ERROR,EMPTY
     }
 
     private Unbinder mBind;
     private FrameLayout baseContainer;
+
+
+    @OnClick(R.id.network_error_tips)
+    public void retry(){
+        //点击了重新加载内容
+        LogUtils.d(this,"on retry");
+        onRetryClick();
+    }
+
+    //子类可选择是否覆盖
+    protected void onRetryClick() {
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View rootView=inflater.inflate(R.layout.base_fragment_layout,container,false);
+        View rootView = loadRootView(inflater,container);
+
         baseContainer=rootView.findViewById(R.id.base_container);
         loadStatesView(inflater,container);
 
@@ -37,6 +56,10 @@ public abstract class BaseFragment extends Fragment {
         initPresenter();
         loadData();
         return rootView;
+    }
+
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_fragment_layout,container,false);
     }
 
 
@@ -50,7 +73,11 @@ public abstract class BaseFragment extends Fragment {
         loadingView=loadLoadingView(inflater,container);
         baseContainer.addView(loadingView);
 
-        loadErrorView(inflater,container);
+        errorView=loadErrorView(inflater,container);
+        baseContainer.addView(errorView);
+
+        emptyView=loadEmptyView(inflater,container);
+        baseContainer.addView(emptyView);
 
         setupState(State.NONE);
     }
@@ -64,19 +91,14 @@ public abstract class BaseFragment extends Fragment {
     }
 
 
+    //子类通过该方法切换状态页面
     public void setupState(State state){
         this.currentState=state;
-        if(currentState == State.SUCCESS){
-            successView.setVisibility(View.VISIBLE);
-        }else{
-            successView.setVisibility(View.GONE);
-        }
+        successView.setVisibility(currentState == State.SUCCESS?View.VISIBLE:View.GONE);
+        loadingView.setVisibility(currentState == State.LOADING?View.VISIBLE:View.GONE);
+        errorView.setVisibility(currentState == State.ERROR?View.VISIBLE:View.GONE);
+        emptyView.setVisibility(currentState == State.EMPTY?View.VISIBLE:View.GONE);
 
-        if(currentState == State.LOADING){
-            loadingView.setVisibility(View.VISIBLE);
-        }else{
-            loadingView.setVisibility(View.GONE);
-        }
     }
 
     //加载loading界面
