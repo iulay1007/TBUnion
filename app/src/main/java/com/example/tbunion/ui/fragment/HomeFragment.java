@@ -1,6 +1,5 @@
 package com.example.tbunion.ui.fragment;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +44,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     protected void initPresenter() {
      homePresenter=new HomePresenterImpl();
-     homePresenter.registerCallback(this);
+     homePresenter.registerViewCallback(this);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected void release() {
         //取消注册
         if(homePresenter!=null)
-            homePresenter.unregisterCallback(this);
+            homePresenter.unregisterViewCallback(this);
     }
 
     @Override
