@@ -45,7 +45,7 @@ public class HomePresenterImpl implements IHomePresenter {
                 }else {
                     LogUtils.i(HomePresenterImpl.this,"请求失败");
                     if(mCallback!=null){
-                        mCallback.onNetworkError();
+                        mCallback.onError();
                     }
                 }
 
@@ -55,7 +55,7 @@ public class HomePresenterImpl implements IHomePresenter {
             @Override
             public void onFailure(Call<Categories> call, Throwable t) {
                 if(mCallback!=null){
-                    mCallback.onNetworkError();
+                    mCallback.onError();
                 }
                 LogUtils.e(HomePresenterImpl.this,"请求错误"+t);
             }

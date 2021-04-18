@@ -3,12 +3,31 @@ package com.example.tbunion.ui.fragment;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tbunion.R;
 import com.example.tbunion.base.BaseFragment;
 import com.example.tbunion.model.domain.Categories;
+import com.example.tbunion.model.domain.HomePagerContent;
+import com.example.tbunion.presenter.ICategoryPagerPresenter;
+import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
+import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
 import com.example.tbunion.utils.Constants;
+import com.example.tbunion.view.ICategoryPagerCallback;
 
-public class HomePagerFragment extends BaseFragment {
+import java.util.List;
+
+import butterknife.BindView;
+
+public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback {
+
+    private ICategoryPagerPresenter categoryPagePresenter;
+    private int materialId;
+
+    @BindView(R.id.home_pager_content_list)
+    public RecyclerView mContentList;
+    private HomePagerContentAdapter contentAdapter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -28,14 +47,87 @@ public class HomePagerFragment extends BaseFragment {
 
     @Override
     protected void initView(View rootView) {
-        setupState(State.SUCCESS);
+        //设置布局管理器
+        mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        //创建适配器
+        contentAdapter = new HomePagerContentAdapter();
+
+        //设置适配器
+        mContentList.setAdapter(contentAdapter);
     }
+
+    @Override
+    protected void initPresenter() {
+        categoryPagePresenter = CategoryPagePresenterImpl.getsInstance();
+        categoryPagePresenter.registerViewCallback(this);
+    }
+
 
     @Override
     protected void loadData() {
         Bundle arguments = getArguments();
         String title = arguments.getString(Constants.KEY_HOME_PAGER_TITLE);
-        int materialId=arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
+        materialId=arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
         //TODO加载数据
+        if(categoryPagePresenter!=null){
+            categoryPagePresenter.getContentByCategoryId(materialId);
+        }
+    }
+
+    @Override
+    public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
+        //数据列表加载到了
+        //TODO:更新UI
+        contentAdapter.setData(contents);
+        setupState(State.SUCCESS);
+
+    }
+
+    @Override
+    public int getCategoryId() {
+        return materialId;
+    }
+
+    @Override
+    public void onLoading() {
+        setupState(State.LOADING);
+    }
+
+    @Override
+    public void onError() {
+        //网络错误
+        setupState(State.ERROR);
+    }
+
+    @Override
+    public void onEmpty() {
+       setupState(State.EMPTY);
+    }
+
+    @Override
+    public void onLoaderMoreError() {
+
+    }
+
+    @Override
+    public void onLoaderMoreEmpty() {
+
+    }
+
+    @Override
+    public void onLoaderMoreLoaded(List<HomePagerContent.DataBean> contents) {
+
+    }
+
+    @Override
+    public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
+
+    }
+
+    @Override
+    protected void release() {
+        if(categoryPagePresenter != null){
+            categoryPagePresenter.unregisterViewCallback(this);
+        }
     }
 }
