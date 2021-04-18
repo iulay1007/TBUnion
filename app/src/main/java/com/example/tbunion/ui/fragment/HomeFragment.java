@@ -1,9 +1,12 @@
 package com.example.tbunion.ui.fragment;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.tbunion.R;
@@ -32,6 +35,13 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     protected int getRootViewResId() {
         return R.layout.fragment_home;
     }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater,container,savedInstanceState);
+    }
+
 
     @Override
     protected void initView(View rootView) {

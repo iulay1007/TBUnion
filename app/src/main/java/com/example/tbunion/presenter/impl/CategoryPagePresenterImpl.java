@@ -49,15 +49,15 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
             }
         }
         //根据分类ID加载内容
-        Retrofit retrofit= RetrofitManager.getInstance().getRetrofit();
-        Api api =retrofit.create(Api.class);
-        Integer targetPage=pageInfo.get(categoryId);
+       Integer targetPage=pageInfo.get(categoryId);
         if(targetPage == null){
             targetPage = DEFAULT_PAGE;
             pageInfo.put(categoryId,DEFAULT_PAGE);
         }
         String homePagerUrl = UrlUtils.createHomePagerUrl(categoryId,targetPage);
         LogUtils.d(this,"homepager url -->"+homePagerUrl);
+        Retrofit retrofit= RetrofitManager.getInstance().getRetrofit();
+        Api api =retrofit.create(Api.class);
         api.getHomePageContent(homePagerUrl);
         Call<HomePagerContent> task =api.getHomePageContent(homePagerUrl);
         task.enqueue(new Callback<HomePagerContent>() {
@@ -68,16 +68,20 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
                 if(code == HttpURLConnection.HTTP_OK){
                    HomePagerContent pagerContent = response.body();
                    LogUtils.d(CategoryPagePresenterImpl.this,"pagecontent  -->"+pagerContent);
-                   //把数据更新到UI
+                    LogUtils.d(CategoryPagePresenterImpl.this,"categoryId -->"+categoryId);
+
+                    //把数据更新到UI
                     handleHomePageContentResult(pagerContent,categoryId);
                 }else {
+                    LogUtils.d(CategoryPagePresenterImpl.this,"error code -->"+code);
+
                     handleNetworkError(categoryId);
                 }
             }
 
             @Override
             public void onFailure(Call<HomePagerContent> call, Throwable t) {
-                LogUtils.d(this,"onFailure -->"+t.toString());
+                LogUtils.d(CategoryPagePresenterImpl.this,"onFailure -->"+t.toString());
                 handleNetworkError(categoryId);
             }
         });

@@ -11,7 +11,7 @@ public class HomePagerContent {
      */
 
     private boolean success;
-    private int code;
+    private long code;
     private String message;
     private List<DataBean> data;
 
@@ -23,7 +23,7 @@ public class HomePagerContent {
         this.success = success;
     }
 
-    public int getCode() {
+    public long getCode() {
         return code;
     }
 
@@ -87,34 +87,34 @@ public class HomePagerContent {
          * zk_final_price : 79.9
          */
 
-        private int category_id;
+        private long category_id;
         private Object category_name;
         private String click_url;
         private String commission_rate;
-        private int coupon_amount;
+        private long coupon_amount;
         private String coupon_click_url;
         private String coupon_end_time;
         private Object coupon_info;
-        private int coupon_remain_count;
+        private long coupon_remain_count;
         private String coupon_share_url;
         private String coupon_start_fee;
         private String coupon_start_time;
-        private int coupon_total_count;
+        private long coupon_total_count;
         private String item_description;
         private long item_id;
-        private int level_one_category_id;
+        private long level_one_category_id;
         private String level_one_category_name;
         private String nick;
         private String pict_url;
-        private int seller_id;
+        private long seller_id;
         private String shop_title;
         private SmallImagesBean small_images;
         private String title;
-        private int user_type;
-        private int volume;
+        private long user_type;
+        private long volume;
         private String zk_final_price;
 
-        public int getCategory_id() {
+        public long getCategory_id() {
             return category_id;
         }
 
@@ -146,7 +146,7 @@ public class HomePagerContent {
             this.commission_rate = commission_rate;
         }
 
-        public int getCoupon_amount() {
+        public long getCoupon_amount() {
             return coupon_amount;
         }
 
@@ -178,7 +178,7 @@ public class HomePagerContent {
             this.coupon_info = coupon_info;
         }
 
-        public int getCoupon_remain_count() {
+        public long getCoupon_remain_count() {
             return coupon_remain_count;
         }
 
@@ -210,7 +210,7 @@ public class HomePagerContent {
             this.coupon_start_time = coupon_start_time;
         }
 
-        public int getCoupon_total_count() {
+        public long getCoupon_total_count() {
             return coupon_total_count;
         }
 
@@ -234,7 +234,7 @@ public class HomePagerContent {
             this.item_id = item_id;
         }
 
-        public int getLevel_one_category_id() {
+        public long getLevel_one_category_id() {
             return level_one_category_id;
         }
 
@@ -266,7 +266,7 @@ public class HomePagerContent {
             this.pict_url = pict_url;
         }
 
-        public int getSeller_id() {
+        public long getSeller_id() {
             return seller_id;
         }
 
@@ -298,7 +298,7 @@ public class HomePagerContent {
             this.title = title;
         }
 
-        public int getUser_type() {
+        public long getUser_type() {
             return user_type;
         }
 
@@ -306,7 +306,7 @@ public class HomePagerContent {
             this.user_type = user_type;
         }
 
-        public int getVolume() {
+        public long getVolume() {
             return volume;
         }
 
@@ -320,38 +320,6 @@ public class HomePagerContent {
 
         public void setZk_final_price(String zk_final_price) {
             this.zk_final_price = zk_final_price;
-        }
-
-        @Override
-        public String toString() {
-            return "DataBean{" +
-                    "category_id=" + category_id +
-                    ", category_name=" + category_name +
-                    ", click_url='" + click_url + '\'' +
-                    ", commission_rate='" + commission_rate + '\'' +
-                    ", coupon_amount=" + coupon_amount +
-                    ", coupon_click_url='" + coupon_click_url + '\'' +
-                    ", coupon_end_time='" + coupon_end_time + '\'' +
-                    ", coupon_info=" + coupon_info +
-                    ", coupon_remain_count=" + coupon_remain_count +
-                    ", coupon_share_url='" + coupon_share_url + '\'' +
-                    ", coupon_start_fee='" + coupon_start_fee + '\'' +
-                    ", coupon_start_time='" + coupon_start_time + '\'' +
-                    ", coupon_total_count=" + coupon_total_count +
-                    ", item_description='" + item_description + '\'' +
-                    ", item_id=" + item_id +
-                    ", level_one_category_id=" + level_one_category_id +
-                    ", level_one_category_name='" + level_one_category_name + '\'' +
-                    ", nick='" + nick + '\'' +
-                    ", pict_url='" + pict_url + '\'' +
-                    ", seller_id=" + seller_id +
-                    ", shop_title='" + shop_title + '\'' +
-                    ", small_images=" + small_images +
-                    ", title='" + title + '\'' +
-                    ", user_type=" + user_type +
-                    ", volume=" + volume +
-                    ", zk_final_price='" + zk_final_price + '\'' +
-                    '}';
         }
 
         public static class SmallImagesBean {

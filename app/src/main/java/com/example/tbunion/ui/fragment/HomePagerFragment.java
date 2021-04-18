@@ -1,8 +1,10 @@
 package com.example.tbunion.ui.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,6 +51,13 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     protected void initView(View rootView) {
         //设置布局管理器
         mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = 8;
+                outRect.bottom = 8;
+            }
+        });
         //创建适配器
         contentAdapter = new HomePagerContentAdapter();
 

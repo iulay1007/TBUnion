@@ -8,4 +8,5 @@
     <color name="colorTabSelectde">#ffffff</color>
     <color name="colorTabNormal">#aaffffff</color>
     <color name="color_tamll">#D0021B</color>
+    <color name="colorPageBg">#EEEEEE</color>
 </resources>
