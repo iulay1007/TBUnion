@@ -49,7 +49,7 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         notifyDataSetChanged();
     }
 
-    public class InnerHolder extends RecyclerView.ViewHolder{
+    public  class InnerHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.goods_cover)
         public ImageView cover;
 
