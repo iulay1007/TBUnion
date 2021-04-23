@@ -70,9 +70,10 @@ public class HomeFragment extends BaseFragment implements IHomeCallback {
     @Override
     public void onCategoriesLoaded(Categories categories) {
             setupState(State.SUCCESS);
-        if(homePagerAdapter!=null)
-        homePagerAdapter.setCategories(categories);
-
+        if(homePagerAdapter!=null) {
+          //  homePager.setOffscreenPageLimit(categories.getData().size());
+            homePagerAdapter.setCategories(categories);
+        }
     }
 
     @Override

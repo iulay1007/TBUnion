@@ -3,10 +3,13 @@ package com.example.tbunion.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.tbunion.R;
 import com.example.tbunion.base.BaseFragment;
@@ -15,7 +18,9 @@ import com.example.tbunion.model.domain.HomePagerContent;
 import com.example.tbunion.presenter.ICategoryPagerPresenter;
 import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
 import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
+import com.example.tbunion.ui.adapter.LooperPagerAdapter;
 import com.example.tbunion.utils.Constants;
+import com.example.tbunion.utils.LogUtils;
 import com.example.tbunion.view.ICategoryPagerCallback;
 
 import java.util.List;
@@ -26,10 +31,21 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     private ICategoryPagerPresenter categoryPagePresenter;
     private int materialId;
+    private LooperPagerAdapter looperPagerAdapter;
 
     @BindView(R.id.home_pager_content_list)
     public RecyclerView mContentList;
     private HomePagerContentAdapter contentAdapter;
+
+    @BindView(R.id.looper_pager)
+    public ViewPager looperPager;
+
+    @BindView(R.id.home_pager_title)
+    public TextView currentCategoryTitleTv;
+
+    @BindView(R.id.looper_point_container)
+    public LinearLayout looperPointContainer;
+
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -49,7 +65,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initView(View rootView) {
-        //设置布局管理器
+        //RecyclerView设置布局管理器
         mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
         mContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -58,11 +74,16 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                 outRect.bottom = 8;
             }
         });
-        //创建适配器
+        //RecyclerView创建适配器
         contentAdapter = new HomePagerContentAdapter();
-
-        //设置适配器
+        //RecyclerView设置适配器
         mContentList.setAdapter(contentAdapter);
+        //创建轮播图适配器
+         looperPagerAdapter =new LooperPagerAdapter();
+        //设置轮播图适配器
+        looperPager.setAdapter(looperPagerAdapter);
+
+
     }
 
     @Override
@@ -80,6 +101,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         //TODO加载数据
         if(categoryPagePresenter!=null){
             categoryPagePresenter.getContentByCategoryId(materialId);
+        }
+        if(currentCategoryTitleTv!=null){
+            currentCategoryTitleTv.setText(title);
         }
     }
 
@@ -130,7 +154,16 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
-
+        LogUtils.d(this,"Looper size -- >"+contents.size());
+        looperPagerAdapter.setData(contents);
+        looperPointContainer.removeAllViews();
+        //添加点
+        for(int i=0;i<contents.size();i++){
+            View view =new View(getContext());
+            //TODO
+          //  LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams()
+            looperPointContainer.addView(view);
+        }
     }
 
     @Override
