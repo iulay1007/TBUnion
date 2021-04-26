@@ -1,11 +1,11 @@
 package com.example.tbunion.ui.fragment;
 
 import android.graphics.Rect;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -24,6 +24,8 @@ import com.example.tbunion.utils.Constants;
 import com.example.tbunion.utils.LogUtils;
 import com.example.tbunion.utils.SizeUtils;
 import com.example.tbunion.view.ICategoryPagerCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.List;
 
@@ -48,6 +50,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     @BindView(R.id.looper_point_container)
     public LinearLayout looperPointContainer;
 
+    @BindView(R.id.home_pager_refresh)
+    public TwinklingRefreshLayout twinklingRefreshLayout;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -84,6 +88,10 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
          looperPagerAdapter =new LooperPagerAdapter();
         //设置轮播图适配器
         looperPager.setAdapter(looperPagerAdapter);
+        //设置Refresh相关属性
+        twinklingRefreshLayout.setEnableRefresh(false);
+        twinklingRefreshLayout.setEnableLoadmore(true);
+
 
 
     }
@@ -108,6 +116,16 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        twinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+            @Override
+            public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+                LogUtils.d(HomePagerFragment.this,"onLoadMore...");
+                if (categoryPagePresenter != null) {
+                    categoryPagePresenter.loaderMore(materialId);
+                }
             }
         });
     }
