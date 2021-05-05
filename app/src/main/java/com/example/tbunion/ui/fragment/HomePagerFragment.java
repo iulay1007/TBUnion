@@ -3,6 +3,8 @@ package com.example.tbunion.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,9 +22,11 @@ import com.example.tbunion.presenter.ICategoryPagerPresenter;
 import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
 import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
 import com.example.tbunion.ui.adapter.LooperPagerAdapter;
+import com.example.tbunion.ui.custom.TbNestedScrollView;
 import com.example.tbunion.utils.Constants;
 import com.example.tbunion.utils.LogUtils;
 import com.example.tbunion.utils.SizeUtils;
+import com.example.tbunion.utils.ToastUtil;
 import com.example.tbunion.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -52,6 +56,15 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @BindView(R.id.home_pager_refresh)
     public TwinklingRefreshLayout twinklingRefreshLayout;
+
+    @BindView(R.id.home_pager_parent)
+    public LinearLayout homePagerParent;
+
+    @BindView(R.id.home_pager_header_container)
+    public LinearLayout homeHeaderContainer;
+
+    @BindView(R.id.home_pager_nested_scroll)
+    public TbNestedScrollView homePagerNestedView;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -98,6 +111,22 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initListener() {
+        homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                int headerHeight = homeHeaderContainer.getMeasuredHeight();
+                homePagerNestedView.setHeaderHeight(headerHeight);
+                int measureHeight = homePagerParent.getMeasuredHeight();
+
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentList.getLayoutParams();
+                layoutParams.height = measureHeight;
+                mContentList.setLayoutParams(layoutParams);
+                if(measureHeight != 0){
+                    homePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
         looperPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -127,6 +156,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
                     categoryPagePresenter.loaderMore(materialId);
                 }
             }
+
         });
     }
 
@@ -195,17 +225,28 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     public void onLoaderMoreError() {
+        ToastUtil.showToast("网络异常，请稍后重试");
+        if (twinklingRefreshLayout != null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
 
     }
 
     @Override
     public void onLoaderMoreEmpty() {
-
+        ToastUtil.showToast("没有更多商品");
+        if (twinklingRefreshLayout != null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
     }
 
     @Override
     public void onLoaderMoreLoaded(List<HomePagerContent.DataBean> contents) {
-
+        contentAdapter.addData(contents);
+        if (twinklingRefreshLayout != null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
+        ToastUtil.showToast("加载了"+contents.size()+"条数据");
     }
 
 

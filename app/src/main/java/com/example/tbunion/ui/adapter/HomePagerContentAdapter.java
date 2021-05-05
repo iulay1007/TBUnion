@@ -52,6 +52,12 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
         notifyDataSetChanged();
     }
 
+    public void addData(List<HomePagerContent.DataBean> contents) {
+        int olderSize = data.size();
+        data.addAll(contents);
+        notifyItemRangeChanged(olderSize,contents.size());
+    }
+
     public  class InnerHolder extends RecyclerView.ViewHolder{
         @BindView(R.id.goods_cover)
         public ImageView coverIv;
@@ -84,6 +90,11 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
           //  offPriceTv.setText(dataBean.getCoupon_amount()+"");
             Context context = itemView.getContext();
             title.setText(dataBean.getTitle());
+            ViewGroup.LayoutParams layoutParams = coverIv.getLayoutParams();
+            int width = layoutParams.width;
+            int height = layoutParams.height;
+            int coverSize =(width>height ? width:height )/2;
+
             //ViewGroup.LayoutParams layoutParams = cover.getLayoutParams();
             //int width = layoutParams.width;
             //int height = layoutParams.height;
@@ -91,7 +102,7 @@ public class HomePagerContentAdapter extends RecyclerView.Adapter<HomePagerConte
             //LogUtils.d(this,"url == > " + dataBean.getPict_url());
             String cover = dataBean.getPict_url();
             if(!TextUtils.isEmpty(cover)) {
-                String coverPath = UrlUtils.getCoverPath(dataBean.getPict_url());
+                String coverPath = UrlUtils.getCoverPath(cover,coverSize);
                 Glide.with(context).load(coverPath).into(this.coverIv);
             } else {
                 coverIv.setImageResource(R.mipmap.ic_launcher);

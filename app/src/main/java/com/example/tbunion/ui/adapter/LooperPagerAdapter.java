@@ -37,7 +37,10 @@ public class LooperPagerAdapter extends PagerAdapter {
         //处理越界问题
         int realPosition =position %data.size();
         HomePagerContent.DataBean dataBean=data.get(realPosition);
-        String coverUrl= UrlUtils.getCoverPath(dataBean.getPict_url());
+        int measuredHeight = container.getMeasuredHeight();
+        int measuredWidth = container.getMeasuredWidth();
+        int ivSize =(measuredWidth>measuredHeight?measuredWidth:measuredHeight)/2;
+        String coverUrl= UrlUtils.getCoverPath(dataBean.getPict_url(),ivSize);
         ImageView iv=new ImageView(container.getContext());
         ViewGroup.LayoutParams layoutParams=new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
         iv.setLayoutParams(layoutParams);
