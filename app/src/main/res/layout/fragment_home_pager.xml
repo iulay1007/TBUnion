@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:id="@+id/home_pager_refresh"
         >
-    <com.example.tbunion.ui.custom.TbNestedScrollView
+    <com.lcodecore.tkrefreshlayout.views.TbNestedScrollView
         android:id="@+id/home_pager_nested_scroll"
         android:layout_width="match_parent"
         android:overScrollMode="never"
@@ -50,16 +50,18 @@
             android:layout_height="wrap_content"/>
     </RelativeLayout>
 
-    <include layout="@layout/include_homepager_title_part"/>
+    <include layout="@layout/include_homepager_title_part"
+        android:layout_width="match_parent"
+        android:layout_marginTop="11dp"
+        android:layout_height="wrap_content" />
 
          </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
-    android:layout_marginTop="10dp"
     android:id="@+id/home_pager_content_list"
     android:overScrollMode="never"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
      </LinearLayout>
-    </com.example.tbunion.ui.custom.TbNestedScrollView>
+    </com.lcodecore.tkrefreshlayout.views.TbNestedScrollView>
     </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 </LinearLayout>

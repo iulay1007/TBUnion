@@ -3,11 +3,9 @@ package com.example.tbunion.ui.fragment;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +20,6 @@ import com.example.tbunion.presenter.ICategoryPagerPresenter;
 import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
 import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
 import com.example.tbunion.ui.adapter.LooperPagerAdapter;
-import com.example.tbunion.ui.custom.TbNestedScrollView;
 import com.example.tbunion.utils.Constants;
 import com.example.tbunion.utils.LogUtils;
 import com.example.tbunion.utils.SizeUtils;
@@ -30,6 +27,8 @@ import com.example.tbunion.utils.ToastUtil;
 import com.example.tbunion.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.views.TbNestedScrollView;
+
 
 import java.util.List;
 
@@ -114,6 +113,9 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
+                if (homeHeaderContainer == null) {
+                    return;
+                }
                 int headerHeight = homeHeaderContainer.getMeasuredHeight();
                 homePagerNestedView.setHeaderHeight(headerHeight);
                 int measureHeight = homePagerParent.getMeasuredHeight();
@@ -184,7 +186,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         Bundle arguments = getArguments();
         String title = arguments.getString(Constants.KEY_HOME_PAGER_TITLE);
         materialId=arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
-        //TODO加载数据
+        //TODO:加载数据
         if(categoryPagePresenter!=null){
             categoryPagePresenter.getContentByCategoryId(materialId);
         }

@@ -1,4 +1,4 @@
-package com.example.tbunion.ui.custom;
+package com.lcodecore.tkrefreshlayout.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,10 +7,12 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class TbNestedScrollView extends NestedScrollView {
     private int headerHeight = 0;
     private int originScroll = 0;
+    private RecyclerView mRecyclerView;
 
     public TbNestedScrollView(@NonNull Context context) {
         super(context);
@@ -30,6 +32,10 @@ public class TbNestedScrollView extends NestedScrollView {
 
    @Override
    public void onNestedPreScroll(@NonNull View target, int dx, int dy, @NonNull int[] consumed, int type) {
+
+     if(target instanceof RecyclerView){
+         this.mRecyclerView = (RecyclerView)target;
+     }
        if(originScroll< headerHeight){
         scrollBy(dx,dy);
         consumed[0]=dx;
@@ -42,5 +48,15 @@ public class TbNestedScrollView extends NestedScrollView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         originScroll = t;
         super.onScrollChanged(l, t, oldl, oldt);
+    }
+
+    //判断子类是否已经滑动到底部
+    public boolean isInBottom() {
+        if (mRecyclerView != null) {
+          boolean isBottom =  !mRecyclerView.canScrollVertically(1);
+          return isBottom;
+        }
+
+        return false;
     }
 }
