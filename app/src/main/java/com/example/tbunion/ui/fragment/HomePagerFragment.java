@@ -20,6 +20,7 @@ import com.example.tbunion.presenter.ICategoryPagerPresenter;
 import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
 import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
 import com.example.tbunion.ui.adapter.LooperPagerAdapter;
+import com.example.tbunion.ui.custom.AutoLoopViewPager;
 import com.example.tbunion.utils.Constants;
 import com.example.tbunion.utils.LogUtils;
 import com.example.tbunion.utils.SizeUtils;
@@ -45,7 +46,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
     private HomePagerContentAdapter contentAdapter;
 
     @BindView(R.id.looper_pager)
-    public ViewPager looperPager;
+    public AutoLoopViewPager looperPager;
 
     @BindView(R.id.home_pager_title)
     public TextView currentCategoryTitleTv;
@@ -106,6 +107,19 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
 
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //可见的时候调用轮播的start
+        looperPager.startLoop();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        looperPager.stopLoop();
     }
 
     @Override
