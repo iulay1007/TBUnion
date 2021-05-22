@@ -13,6 +13,10 @@ import com.example.tbunion.R;
 public class AutoLoopViewPager extends ViewPager {
     public static final long DEFAULT_DURATION = 3000;
 
+    public void setmDuration(long mDuration) {
+        this.mDuration = mDuration;
+    }
+
     private long mDuration = DEFAULT_DURATION;
 
     public AutoLoopViewPager(@NonNull  Context context) {
@@ -28,6 +32,7 @@ public class AutoLoopViewPager extends ViewPager {
     private void init(Context context, AttributeSet attrs) {
         TypedArray t = context.obtainStyledAttributes(attrs,R.styleable.AutoLoopStyle);
         //获取属性
+        //TODO
         mDuration = t.getInteger(R.styleable.AutoLoopStyle_duration,(int) DEFAULT_DURATION);
        t.recycle();
     }

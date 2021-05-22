@@ -1,5 +1,6 @@
 package com.example.tbunion.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.example.tbunion.model.domain.Categories;
 import com.example.tbunion.model.domain.HomePagerContent;
 import com.example.tbunion.presenter.ICategoryPagerPresenter;
 import com.example.tbunion.presenter.impl.CategoryPagePresenterImpl;
+import com.example.tbunion.ui.activity.TicketActivity;
 import com.example.tbunion.ui.adapter.HomePagerContentAdapter;
 import com.example.tbunion.ui.adapter.LooperPagerAdapter;
 import com.example.tbunion.ui.custom.AutoLoopViewPager;
@@ -35,7 +37,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback {
+public class HomePagerFragment extends BaseFragment implements ICategoryPagerCallback, HomePagerContentAdapter.onListItemClickListener, LooperPagerAdapter.onLooperPageItemClickListener {
 
     private ICategoryPagerPresenter categoryPagePresenter;
     private int materialId;
@@ -101,7 +103,7 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
          looperPagerAdapter =new LooperPagerAdapter();
         //设置轮播图适配器
         looperPager.setAdapter(looperPagerAdapter);
-        //设置Refresh相关属性
+        looperPager.setmDuration(5000);      //设置Refresh相关属性
         twinklingRefreshLayout.setEnableRefresh(false);
         twinklingRefreshLayout.setEnableLoadmore(true);
 
@@ -124,6 +126,8 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
 
     @Override
     protected void initListener() {
+        contentAdapter.setOnListItemClickListener(this);
+        looperPagerAdapter.setonLooperPageItemClickListener(this);
         homePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -297,5 +301,22 @@ public class HomePagerFragment extends BaseFragment implements ICategoryPagerCal
         if(categoryPagePresenter != null){
             categoryPagePresenter.unregisterViewCallback(this);
         }
+    }
+
+    @Override
+    public void onItemClick(HomePagerContent.DataBean item) {
+        //列表内容被点击
+        handleItemClick(item);
+
+    }
+
+    private void handleItemClick(HomePagerContent.DataBean item) {
+        startActivity(new Intent(getContext(), TicketActivity.class));
+    }
+
+    @Override
+    public void onLooperItemClick(HomePagerContent.DataBean item) {
+        //轮播图内容被点击
+        handleItemClick(item);
     }
 }

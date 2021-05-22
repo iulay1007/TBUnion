@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.example.tbunion.R;
+import com.example.tbunion.base.BaseActivity;
 import com.example.tbunion.base.BaseFragment;
 import com.example.tbunion.ui.fragment.HomeFragment;
 import com.example.tbunion.ui.fragment.RedPacketFragment;
@@ -21,7 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.main_navigation_bar)
     public BottomNavigationView navigationView;
     private HomeFragment homeFragment;
@@ -29,25 +30,9 @@ public class MainActivity extends AppCompatActivity  {
     private SelectedFragment selectedFragment;
     private SearchFragment searchFragment;
     private FragmentManager fm;
-    private Unbinder mBind;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mBind = ButterKnife.bind(this);
-        //initView();
-        initFragment();
-        initListener();
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(mBind!=null){
-            mBind.unbind();
-        }
-    }
+
 
     private void initFragment() {
         homeFragment = new HomeFragment();
@@ -57,6 +42,16 @@ public class MainActivity extends AppCompatActivity  {
         fm = getSupportFragmentManager();
         switchFragment(homeFragment);
 
+    }
+
+    @Override
+    protected void initEvent() {
+        initListener();
+    }
+
+    @Override
+    protected void initView() {
+        initFragment();
     }
 
     private void initListener() {
@@ -99,7 +94,9 @@ public class MainActivity extends AppCompatActivity  {
         fragmentTransaction.commit();
     }
 
-    private void initView() {
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
     }
 }
